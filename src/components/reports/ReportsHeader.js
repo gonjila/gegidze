@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   Col,
   Row,
@@ -12,22 +12,62 @@ import {
 import { reportsContext } from "../../context/reportsCtx";
 
 function ReportsHeader() {
-  const productRef = useRef();
+  const projectRef = useRef();
   const gatewayRef = useRef();
   const fromDateRef = useRef();
   const toDateRef = useRef();
 
-  const { projects, gateways, setReports } = useContext(reportsContext);
+  const { setProjects, setGateways, setReports } = useContext(reportsContext);
+
+  const [allProjects, setAllProjects] = useState([]);
+  const [allGateways, setAllGateways] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://178.63.13.157:8090/mock-api/api/projects`)
+      .then((res) => res.json())
+      .then((result) => setAllProjects(result.data))
+      .catch((err) => {
+        console.log(err);
+      });
+    fetch(`http://178.63.13.157:8090/mock-api/api/gateways`)
+      .then((res) => res.json())
+      .then((result) => setAllGateways(result.data))
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const onFormSubmmit = (e) => {
     e.preventDefault();
 
     const formData = {
-      projectId: productRef.current.value,
+      projectId: projectRef.current.value,
       gatewayId: gatewayRef.current.value,
       from: fromDateRef.current.value,
       to: toDateRef.current.value,
     };
+
+    console.log(formData);
+
+    if (projectRef.current.value) {
+      setProjects(
+        allProjects.filter(
+          (project) => project.projectId === projectRef.current.value
+        )
+      );
+    } else {
+      setProjects(allProjects);
+    }
+
+    if (gatewayRef.current.value) {
+      setGateways(
+        allProjects.filter(
+          (project) => project.gatewayIds === gatewayRef.current.value
+        )
+      );
+    } else {
+      setGateways(allGateways);
+    }
 
     fetch(`http://178.63.13.157:8090/mock-api/api/report`, {
       method: "POST",
@@ -49,22 +89,24 @@ function ReportsHeader() {
         <Col xs={8}>
           <Row className="justify-content-end">
             <form onSubmit={(e) => onFormSubmmit(e)}>
-              <select ref={productRef}>
+              <select ref={projectRef}>
                 <option value="">All projects</option>
-                {projects.map((project) => (
-                  <option key={project.projectId} value={project.projectId}>
-                    {project.name}
-                  </option>
-                ))}
+                {allProjects &&
+                  allProjects.map((project) => (
+                    <option key={project.projectId} value={project.projectId}>
+                      {project.name}
+                    </option>
+                  ))}
               </select>
 
               <select ref={gatewayRef}>
                 <option value="">All gateways</option>
-                {gateways.map((gateway) => (
-                  <option key={gateway.gatewayId} value={gateway.projectId}>
-                    {gateway.name}
-                  </option>
-                ))}
+                {allGateways &&
+                  allGateways.map((gateway) => (
+                    <option key={gateway.gatewayId} value={gateway.gatewayId}>
+                      {gateway.name}
+                    </option>
+                  ))}
               </select>
 
               <input type="date" placeholder="from date" ref={fromDateRef} />

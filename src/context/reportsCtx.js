@@ -7,6 +7,13 @@ const ReportsContextProvider = ({ children }) => {
   const [gateways, setGateways] = useState([]);
   const [reports, setReports] = useState([]);
 
+  const formData = {
+    projectId: "",
+    gatewayId: "",
+    from: "",
+    to: "",
+  };
+
   useEffect(() => {
     fetch(`http://178.63.13.157:8090/mock-api/api/projects`)
       .then((res) => res.json())
@@ -21,11 +28,27 @@ const ReportsContextProvider = ({ children }) => {
       .catch((err) => {
         console.log(err);
       });
+
+    fetch(`http://178.63.13.157:8090/mock-api/api/report`, {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((result) => setReports(result.data))
+      .catch((err) => console.log(err));
   }, []);
 
   return (
     <reportsContext.Provider
-      value={{ projects, gateways, reports, setReports }}
+      value={{
+        projects,
+        setProjects,
+        gateways,
+        setGateways,
+        reports,
+        setReports,
+      }}
     >
       {children}
     </reportsContext.Provider>

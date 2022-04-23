@@ -13,7 +13,7 @@ const App = () => {
   return (
     <Router>
       <div className="App wrapper">
-        <SideBar toggle={toggleSidebar} isOpen={sidebarIsOpen} />
+        <SideBar isOpen={sidebarIsOpen} />
         <Content toggleSidebar={toggleSidebar} sidebarIsOpen={sidebarIsOpen} />
       </div>
     </Router>

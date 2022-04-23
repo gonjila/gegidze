@@ -23,11 +23,9 @@ a:focus {
     SIDEBAR STYLE
 ----------------------------------------------------- */
 .sidebar {
-  min-width: 250px;
-  max-width: 250px;
-  background: #7386d5;
+  width: 72px;
   color: #fff;
-  margin-left: -250px;
+  margin-left: -72px;
   transition: all 0.5s;
 }
 
@@ -37,12 +35,18 @@ a:focus {
 }
 
 .sidebar-header {
-  background: #6d7fcc;
+  display: flex;
+  justify-content: center;
+  height: 80px;
+  margin-top: 15px;
 }
 
 .sidebar-header h3 {
   color: #fff;
   padding: 1em;
+}
+.mainlogo {
+  width: 30px;
 }
 
 .sidebar ul p {
@@ -82,6 +86,7 @@ li a.dropdown-toggle::after {
 .side-menu {
   height: calc(100vh - 130px);
   overflow-y: scroll;
+  margin-top: 40px;
 }
 
 .side-menu::-webkit-scrollbar {
@@ -131,4 +136,42 @@ li a.dropdown-toggle::after {
     position: relative;
     left: 68%;
   }
+}
+.nav-link {
+  display: flex;
+  justify-content: center;
+}
+.custom_image {
+  width: 97%;
+}
+.nav-item {
+  margin-bottom: 24px;
+}
+.profilename {
+  background-color: #f6ca65;
+  border: none;
+}
+.navbtn {
+  background-color: transparent;
+  border: none;
+}
+.generatebtn {
+  background-color: #005b96;
+  border: none;
+}
+.buttonheader {
+  border: none;
+  background-color: #1bc5bd;
+}
+.dropdown-toggle {
+  background-color: #1bc5bd;
+  border: none;
+}
+.table td,
+.table th {
+  border-bottom: none;
+  border-top: none;
+}
+.table thead th {
+  border-bottom: none;
 }

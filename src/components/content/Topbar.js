@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAlignLeft } from "@fortawesome/free-solid-svg-icons";
-import {
-  Navbar,
-  Button,
-  NavbarToggler,
-  Collapse,
-  Nav,
-  NavItem,
-  NavLink,
-} from "reactstrap";
-import { Link } from "react-router-dom";
+import { Navbar, Button, NavbarToggler } from "reactstrap";
+import Burger from "../../assets/images/burger.svg";
 
 const Topbar = ({ toggleSidebar }) => {
   const [topbarIsOpen, setTopbarOpen] = useState(true);
@@ -20,37 +12,17 @@ const Topbar = ({ toggleSidebar }) => {
     <Navbar
       color="light"
       light
-      className="navbar shadow-sm p-3 mb-5 bg-white rounded"
+      className="navbar shadow-sm p-3 mb-5 bg-white rounded justify-content-between"
       expand="md"
     >
-      <Button color="info" onClick={toggleSidebar}>
-        <FontAwesomeIcon icon={faAlignLeft} />
+      <Button className="navbtn" onClick={toggleSidebar}>
+        <img src={Burger} alt="Logo" />
       </Button>
       <NavbarToggler onClick={toggleTopbar} />
-      <Collapse isOpen={topbarIsOpen} navbar>
-        <Nav className="ml-auto" navbar>
-          <NavItem>
-            <NavLink tag={Link} to={"/page-1"}>
-              page 1
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to={"/page-2"}>
-              page 2
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to={"/page-3"}>
-              page 3
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to={"/page-4"}>
-              page 4
-            </NavLink>
-          </NavItem>
-        </Nav>
-      </Collapse>
+      <div>
+        <Button className="mr-2 profilename">JD</Button>
+        Jon Doe
+      </div>
     </Navbar>
   );
 };

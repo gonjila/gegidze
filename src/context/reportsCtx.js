@@ -6,6 +6,7 @@ const ReportsContextProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [gateways, setGateways] = useState([]);
   const [reports, setReports] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const formData = {
     projectId: "",
@@ -35,7 +36,16 @@ const ReportsContextProvider = ({ children }) => {
       headers: { "content-type": "application/json" },
     })
       .then((res) => res.json())
-      .then((result) => setReports(result.data))
+      .then((result) => {
+        setReports(result.data);
+        return result.data;
+      })
+      .then((data) =>
+        setTotalAmount(
+          Math.round(data.reduce((prev, curr) => prev + curr.amount, 0) * 100) /
+            100
+        )
+      )
       .catch((err) => console.log(err));
   }, []);
 
@@ -48,6 +58,7 @@ const ReportsContextProvider = ({ children }) => {
         setGateways,
         reports,
         setReports,
+        totalAmount,
       }}
     >
       {children}

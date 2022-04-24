@@ -2,52 +2,54 @@ import React, { useContext } from "react";
 import { Table, Row, Col } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 import { reportsContext } from "../../context/reportsCtx";
 
-const data = {
-  labels: ["Mon", "Tue", "Wed", "Thurs", "Fri"],
-  datasets: [
-    {
-      label: "Attendance for Week 1",
-      data: [25, 24, 25, 25, 3],
-      borderColor: ["rgba(255,206,86,0.2)"],
-      backgroundColor: [
-        "rgba(232,99,132,1)",
-        "rgba(232,211,6,1)",
-        "rgba(54,162,235,1)",
-        "rgba(255,159,64,1)",
-        "rgba(153,102,255,1)",
-      ],
-      pointBackgroundColor: "rgba(255,206,86,0.2)",
-    },
-  ],
-};
-
-const options = {
-  plugins: {
-    title: {
-      display: true,
-      text: "Doughnut Chart",
-      color: "blue",
-      font: {
-        size: 34,
-      },
-      padding: {
-        top: 30,
-        bottom: 30,
-      },
-      responsive: true,
-      animation: {
-        animateScale: true,
-      },
-    },
-  },
-};
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Projectswithchart() {
-  const { projects, gateways, reports } = useContext(reportsContext);
+  const { projects, gateways, reports, totalAmount } = useContext(
+    reportsContext
+  );
+
+  const productsPrices = projects.map((project) => {
+    let currentAmount = 0;
+    reports.map((report) => {
+      if (project.projectId === report.projectId) {
+        currentAmount += report.amount;
+      }
+    });
+    return currentAmount;
+  });
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  const chartData = {
+    labels: projects.map((project) => project.name),
+    datasets: [
+      {
+        label: "# of Votes",
+        data: productsPrices.map((price) => (price * 100) / totalAmount),
+        backgroundColor: projects.map(
+          () =>
+            `rgba(${getRandomInt(255)}, ${getRandomInt(255)}, ${getRandomInt(
+              255
+            )}, 0.2)`
+        ),
+        borderColor: projects.map(
+          () =>
+            `rgba(${getRandomInt(255)}, ${getRandomInt(255)}, ${getRandomInt(
+              255
+            )}, 1)`
+        ),
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <>
@@ -130,7 +132,9 @@ function Projectswithchart() {
               ))}
           </div>
         </Col>
-        <Col xs={6}></Col>
+        <Col xs={6}>
+          <Doughnut data={chartData} />
+        </Col>
       </Row>
     </>
   );
